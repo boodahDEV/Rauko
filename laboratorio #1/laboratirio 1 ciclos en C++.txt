@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+ main (){
+ 	
+ 	int i=100; 
+ 	do{
+ 		i--;
+	 
+ 	 		cout <<" "<<i<<endl;
+ 	 	  
+	  
+ }while (i== 1);
+ }
