@@ -5,28 +5,34 @@
 #include <string.h>
 #include <regex.h>
 
-#define MAX_COMANDOS 2
+
+
+#define MAX_COMANDOS 4
 #define TAM_COMANDO 3
-#define CANT_COM_CAP 10
+#define CANT_COM_CAP 30
+
 //---=== prototipos===---
 void open(char *,char *);
-void cargaComandos(char *,char [][TAM_COMANDO]);
+void cargaComandos(char *,int [][TAM_COMANDO]);
+void comparaEntrada(char *,int [][TAM_COMANDO]);
 
 //---=== MAIN ===---
 void main(){
 	char t_comando[CANT_COM_CAP]; //---=== DATA DEL ARCHIVO!
     char url[]= "./dll/data_1.dll";
-   static char m_comando[MAX_COMANDOS][TAM_COMANDO]={{'\0'}};
+    static int m_comando[MAX_COMANDOS][TAM_COMANDO]={{'\0'}};
+    char entrada[50];
 
  open(url,t_comando);// busca en el archivo!
- cargaComandos(t_comando,m_comando);
+ cargaComandos(t_comando,m_comando); // ---=== CARGA LA MATRIZ CON LOS COMANDOS LEIDOS 
  
- /*for(int i = 0; i < 10; i++)
- {
-     printf("%c [%d]\n",texto[i],i);
- }
-*/
+//---=== ENTRADA DE COMANDOS===---//
+//system("clear");
+scanf("%s",entrada);
 
+comparaEntrada(entrada,m_comando);
+
+/*
 printf("\n\n");
 for(int i = 0;i<MAX_COMANDOS; i++)
 {    
@@ -37,15 +43,15 @@ for(int i = 0;i<MAX_COMANDOS; i++)
     }
     printf("\n");
 }
+*/
 
+}//---=== END MAIN ===---
 
-}
-//---=== END MAIN ===---
 
 
 void open(char *url,char *t_comando){
     FILE *archivo;
-    int comando[2];
+    int comando[MAX_COMANDOS];
 	archivo = fopen(url,"r");
 	
 	if (archivo == NULL){
@@ -60,12 +66,13 @@ void open(char *url,char *t_comando){
         fclose(archivo);
 
     sscanf(t_comando, "%d %d", &comando[0],&comando[1]);    //---=== ESTA FORMA DE DETERMINAR EL COMANDO QUEDARA OBSOLETA AL TENER MAS COMANDOS DEFINIDOS EN EL DLL 
-    printf("El numero: %c%c\n",comando[0],comando[1]);      //
+    //printf("El numero: %c%c\n",comando[0],comando[1]);  
+        //
 } //---=== END BUSCA ===---
 
 
 //---=== CARGA LOS COMANDOS A UNA MATRIZ ESTATICA PARA TENERLO EN MEMORIA ===---
-void cargaComandos(char *t_comando,char m_comando[][TAM_COMANDO]){
+void cargaComandos(char *t_comando,int m_comando[][TAM_COMANDO]){
     int p_rescom = 0;
     int p_cancom = 0;
 
@@ -82,4 +89,36 @@ void cargaComandos(char *t_comando,char m_comando[][TAM_COMANDO]){
         }
     }
 }// END METODO CARGACOMANDOS
+
+void comparaEntrada(char *entrada, int m_comando[][TAM_COMANDO]){
+    char temp[3];
+    int a_num_comando[MAX_COMANDOS];
+ 
+    
+    for(int i = 0; i < MAX_COMANDOS; i++){
+    
+        for(int j = 0; j < TAM_COMANDO; j++)
+        {
+            temp[j]=(char)m_comando[i][j]; //---=== ALMACENA EN TEMP POR FILA, LO QUE TENGO EN LA MATRIZ DE COMANDOS
+            sscanf(temp,"%d",&a_num_comando[i]);
+        }
+            //temp[i+1]='\0';
+    }//end for
+
+/*
+        printf("Salida: ");
+        for(int i = 0; i < 50; i++)
+        {
+            
+            for(int j = 0; j < MAX_COMANDOS; j++)
+            {
+                if((int)entrada[i] == a_num_comando[j]){
+                 printf("%c",a_num_comando[j]); // ---=== si encuentra que la entrada es es igual imprime ese caracter!
+                }
+            }
+            
+        }
+       //printf("\n");
+  */  
+}//---=== END COMPARAENTRADA
 
