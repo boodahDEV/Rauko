@@ -7,7 +7,7 @@
 
 
 
-#define MAX_COMANDOS 4
+#define MAX_COMANDOS 5
 #define TAM_COMANDO 3
 #define CANT_COM_CAP 30
 
@@ -28,7 +28,7 @@ void main(){
  
 //---=== ENTRADA DE COMANDOS===---//
 //system("clear");
-scanf("%s",entrada);
+scanf("%[^\n]",entrada);
 
 comparaEntrada(entrada,m_comando);
 
@@ -102,23 +102,19 @@ void comparaEntrada(char *entrada, int m_comando[][TAM_COMANDO]){
             temp[j]=(char)m_comando[i][j]; //---=== ALMACENA EN TEMP POR FILA, LO QUE TENGO EN LA MATRIZ DE COMANDOS
             sscanf(temp,"%d",&a_num_comando[i]);
         }
-            //temp[i+1]='\0';
+            temp[i-2]='\0';
     }//end for
 
-/*
-        printf("Salida: ");
-        for(int i = 0; i < 50; i++)
-        {
+        for(int i = 0; i < sizeof(entrada); i++){
             
-            for(int j = 0; j < MAX_COMANDOS; j++)
-            {
+            for(int j = 0; j < MAX_COMANDOS; j++){
                 if((int)entrada[i] == a_num_comando[j]){
-                 printf("%c",a_num_comando[j]); // ---=== si encuentra que la entrada es es igual imprime ese caracter!
+                 printf("[%c]",a_num_comando[j]); // ---=== si encuentra que la entrada es es igual imprime ese caracter!
                 }
             }
             
-        }
+        }//end for
        //printf("\n");
-  */  
+  
 }//---=== END COMPARAENTRADA
 
