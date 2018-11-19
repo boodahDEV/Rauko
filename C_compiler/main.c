@@ -3,28 +3,48 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
+
 //---=== prototipos===---
-void Busca();
+void open(char *,char *);
+
 
 //---=== MAIN ===---
 void main(){
+	char texto[10]; //---=== DATA DEL ARCHIVO!
+    char url[]= "./dll/data_1.dll";
+    int num;
+ open(url,texto);// busca en el archivo!
+ 
+ for(int i = 0; i < 10; i++)
+ {
+     printf("%c",texto[i]);
+ }
 
-Busca(); // busca en el archivo!
+ sscanf(texto, "%d", &num);
+ printf("\nnumero: %d\n",num);
+ 
 }
 //---=== END MAIN ===---
 
 
-void Busca(){
+void open(char *url,char *texto){
     FILE *archivo;
-	char *texto;
-    char mucho[10];
-	archivo = fopen("data.dll","r");
+    int num;
+	archivo = fopen(url,"r");
 	
 	if (archivo == NULL){
             printf("\nError de apertura del archivo. \n\n");
         }else{
-            texto = fgets(mucho, 10, archivo);
-			printf("%s", mucho);
+            //texto = fgets(mucho, 10, archivo);
+     
+            for(int i = 0; i < 10; i++)
+            {
+
+                fscanf(archivo,"%c", &texto[i]);
+                
+              //  fgetc(archivo);
+            }      
         }
         fclose(archivo);
+
 } //---=== END BUSCA ===---
