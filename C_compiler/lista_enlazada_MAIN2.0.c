@@ -1,10 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
 #include <string.h>
-#include <regex.h>
-
 #define MAX_DATO_IN 50
 
 struct com_in_sys {
