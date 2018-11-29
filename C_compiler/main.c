@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
-//#include <regex> //
+
 
 #define MAX_DATO_IN 50
 
@@ -17,7 +17,7 @@ typedef struct com_in_sys nod;
 nod * memoria (nod *); 
 nod * creainicio (nod*, FILE *,FILE *);
 void imprimir(nod *);
-nod * busca(nod *, char *);
+int busca(nod *, char *);
 void openDocument(char *, FILE *, nod*);
 
 void main (){
@@ -27,7 +27,6 @@ void main (){
 
     system("clear");
 	scanf("%[^\n]",texto_entrada);
-		//char entrada_secm[50];
 	p=creainicio(p,archivo1,archivo2);
 	openDocument(texto_entrada,archivo,p);
 	//imprimir(p);
@@ -83,10 +82,10 @@ nod * creainicio (nod *p, FILE *archivo1,FILE *archivo2){
 	return (p);	
 }
 
-nod * busca(nod *p, char *texto){
+int busca(nod *p, char *texto){
 	nod *q;
 	q=p;
-	int band = 0,j=0;
+	int band = 0;
 
  while(q != NULL && !band){
     if (strcmp(q->com_name,texto)==0) {
@@ -95,20 +94,14 @@ nod * busca(nod *p, char *texto){
       	 	 q=q->liga;// si no esta pasa al siguiente nodo
     	}
  }//end while
-	if(band){
-   		 printf("\n\n El elemento %s esta en la lista", texto);
-		} else {
-   		 printf("\n\n El elemento %s no esta en la lista", texto);
-		}
+	return band;
 }//termina la funcion busca
 
 
 void openDocument(char *texto, FILE *archivo,nod *p){
 	char temp[MAX_DATO_IN]; //---===  RECUPERA EL TEXTO DEL ARCHIVO DE COMPILACION
-	char delim[] = " "; // se que esto podria ser un simple char sin arreglo pero el strtok requiere que el delimitador sea un arreglo
-    char *texto_divido; // strtok
-	char palabra[1];
-
+	char palabra[1];	//almacena temporalmente el comando definido en las  primeras lineas del comando.
+	int bandera;
 	archivo = fopen(texto,"r"); //---=== abre el documento de la linea de comando
 
  if (archivo== NULL){
@@ -116,30 +109,20 @@ void openDocument(char *texto, FILE *archivo,nod *p){
         }else{
           while (feof(archivo) == 0){
 			  fgets(temp,MAX_DATO_IN,archivo);//---=== TEMP[] TIENE LA DATA DEL ARCHIVO
-			  
 		  }
-	for(int i = 0; i < (int)strlen(temp); i++){
-		if(temp[i]==' '){
-			strncpy(palabra,temp,2);
-			//printf("\t\t[%s][%d]",palabra,((int)strlen(palabra)));
-			busca(p,palabra);
-			break;
+		  for(int i = 0; i < (int)strlen(temp); i++){
+			   if(temp[i]==' '){
+					//strncpy(palabra,temp,2);	este copiaba la cadena entera osea todo temp, por eso lo comente
+					strncat(palabra,temp,2);
+					//printf("\t\t[%s]",palabra);
+					bandera = busca(p,palabra);
+					if(bandera){
+						// si el comando fue exitoso! paso a analizar el resto de texto
+						printf("Exito!");
+						//DEBO LLAMAR A OTRO METODO
+					}
+					break;
+				}
+			}//end for
 		}
-			
-	}
-		}
-	//strncat(palabra,temp,2);
-	
-	
- /*   texto_divido= strtok( temp, delim);	// strtok divide una cadena de texto de acuerdo a un delimitador, en este caso le dije el delimitador 32 y lo guarde en separador
-
-    while( texto_divido != NULL ) {
-        printf( "Trozo : %s \n", texto_divido);
-        
-        texto_divido= strtok( NULL, delim); //la funcion strtok devuelve un puntero al primer token encontrado en la cadena.
-		//strcpy(entrada_secm[i],&texto_divido);
-        i++;								 // Se devuelve un puntero nulo si no quedan tokens para recuperar.
-    }
-	//printf("[ %s ]",temp);
-*/
 }
