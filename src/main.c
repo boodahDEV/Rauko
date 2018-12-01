@@ -134,11 +134,16 @@ void openDocument(char *texto, FILE *archivo,nod *p){
 }//---===	DETERMINA LA ENTRADA DEL ARCHIVO A COMPILAR, LO ANALIZA, Y POSTERIORMENTE EJECUTA LA INSTRUCCION.
 
 void Excecuting_com(int i, char *temp,nod *p){
-
+	char valida[1];
+	int bandera;
 				//if((int)temp[i]==39 && (  ((int)temp[i+1]>=97 && (int)temp[i+1]<=122) || ((int)temp[i+1]>=65 && (int)temp[i+1]<=90)  ||((int) temp[i+1])  /**/) ){
 				if((int)temp[i]==39 && (int)temp[i+1]>=48){
-
-					printf("Encontre la data[%d][%c]\n",i,temp[i+1]);
+					valida[0]=temp[i];
+					printf("\nvalida[%s]\n",valida);
+					bandera = busca(p,valida);
+				if(bandera){
+					printf("Encontre la data[%d][%c]\n",bandera,temp[i+1]);
+				}
 					///("Pase el IF:[%d]\n",i);
 				}
 }
