@@ -18,26 +18,28 @@ nod * memoria (nod *);
 nod * creainicio (nod*, FILE *,FILE *);
 void imprimir(nod *);
 int busca(nod *, char *);
-void openDocument(char *, FILE *, nod*);
+void openDocument(char *, FILE *, nod *);
+void Excecuting_com(int , char *,nod *);
 
+//---===	MAIN	===---	
 void main (){
 		nod *p;
 		FILE *archivo1,*archivo2,*archivo;
 		char texto_entrada[MAX_DATO_IN];
 
-    system("clear");
+    system("cls"); //---=== EN UNIX EX CLEAR		EN WINDOWS ES CLS
 	scanf("%[^\n]",texto_entrada);
 	p=creainicio(p,archivo1,archivo2);
 	openDocument(texto_entrada,archivo,p);
-	//imprimir(p);
-	//printf("\n\nDame el comando: ");scanf("%[^\n]",entrada_secm);
-	//busca(p,entrada_secm);
+
 }//---=== END MAIN()
+//---===	MAIN	===---	
+
 
 nod * memoria (nod * x){
 	x=(nod*)malloc(sizeof(struct com_in_sys)); // libera espacio en memoria a un nodo
 	return (x); 
-}//---=== EN LIBERA MEMORIA
+}//---=== LIBERA MEMORIA
 
 void imprimir(nod * p){
 	nod *q;
@@ -53,12 +55,12 @@ void imprimir(nod * p){
 nod * creainicio (nod *p, FILE *archivo1,FILE *archivo2){
 	int i=0;
 	nod *q;
-	archivo1 = fopen("./dll/data_1.dll","r");
-	archivo2 = fopen("./dll/data_2.dll","r");
+	archivo1 = fopen("../dll/data_1.dll","r");
+	archivo2 = fopen("../dll/data_2.dll","r");
 	p =memoria (p);
 
 	if (archivo1 == NULL && archivo2 == NULL){
-            printf("\nError en el analicis. \n\n");
+            printf("\nError en el analicis1. \n\n");
         }else{
           while (feof(archivo1) == 0 && feof(archivo2)==0){  // el while se ejecuta hasta que encuentre el final del archivo
 			  if(i==1){
@@ -80,7 +82,7 @@ nod * creainicio (nod *p, FILE *archivo1,FILE *archivo2){
         fclose(archivo1);
 		fclose(archivo2);
 	return (p);	
-}
+}//---=== 	CREA LA LISTA EN BASE AL ALFABETO
 
 int busca(nod *p, char *texto){
 	nod *q;
@@ -95,43 +97,48 @@ int busca(nod *p, char *texto){
     	}
  }//end while
 	return band;
-}//termina la funcion busca
+}//---=== BUSCA DENTRO DE LA LISTA, O ALFABETO
 
 
 void openDocument(char *texto, FILE *archivo,nod *p){
 	char temp[MAX_DATO_IN]; //---===  RECUPERA EL TEXTO DEL ARCHIVO DE COMPILACION
 	char palabra[1];	//almacena temporalmente el comando definido en las  primeras lineas del comando.
 	int bandera;
+	int i=0;
 	archivo = fopen(texto,"r"); //---=== abre el documento de la linea de comando
 
  if (archivo== NULL){
-            printf("\nError en el analicis. \n\n");
+            printf("\nError en el analicis2. \n\n");
         }else{
           while (feof(archivo) == 0){
 			  fgets(temp,MAX_DATO_IN,archivo);//---=== TEMP[] TIENE LA DATA DEL ARCHIVO
 		  }
-		  for(int i = 0; i < 50; i++){
+		  for(i = 0; i < 50; i++){
 			   if(temp[i]=='l' && temp[i+1]=='m'){
 				   //i=i-1;
 					//strncpy(palabra,temp,2);	este copiaba la cadena entera osea todo temp, por eso lo comente
 					strncat(palabra,temp,2);
 					printf("\t\t[%s][%d]",palabra,i);
 					bandera = busca(p,palabra);
-					if(bandera){
-						// si el comando fue exitoso! paso a analizar el resto sde texto
-						printf("Exito!");
-						//DEBO LLAMAR A OTRO METODO 
-					}
 					//break;
 				}
 				
-				printf("Que?[%d]\n",i);
-				if(temp[i]=='.' && temp[i+1]=='\n' ){
-					//if(busca(p,temp[i]))
+				if(bandera){
+						// si el comando fue exitoso! paso a analizar el resto sde texto
+						Excecuting_com(i,temp,p);
+						//DEBO LLAMAR A OTRO METODO 
+					}
 
-					printf("Encontre el . /n[%d][%c]\n",i,temp[i]);
-					///("Pase el IF:[%d]\n",i);
-				}
 			}//end for
 		}
+}//---===	DETERMINA LA ENTRADA DEL ARCHIVO A COMPILAR, LO ANALIZA, Y POSTERIORMENTE EJECUTA LA INSTRUCCION.
+
+void Excecuting_com(int i, char *temp,nod *p){
+
+				//if((int)temp[i]==39 && (  ((int)temp[i+1]>=97 && (int)temp[i+1]<=122) || ((int)temp[i+1]>=65 && (int)temp[i+1]<=90)  ||((int) temp[i+1])  /**/) ){
+				if((int)temp[i]==39 && (int)temp[i+1]>=48){
+
+					printf("Encontre la data[%d][%c]\n",i,temp[i+1]);
+					///("Pase el IF:[%d]\n",i);
+				}
 }
