@@ -19,7 +19,7 @@ nod * creainicio (nod*, FILE *,FILE *);
 void imprimir(nod *);
 int busca(nod *, char *);
 void openDocument(char *, FILE *, nod *);
-void Excecuting_com(int , char *,nod *);
+void Excecuting_com(int, char *,nod *);
 
 //---===	MAIN	===---	
 void main (){
@@ -88,12 +88,11 @@ int busca(nod *p, char *texto){
 	nod *q;
 	q=p;
 	int band = 0;
-
  while(q != NULL && !band){
     if (strcmp(q->com_name,texto)==0) {
-        band = 1; // si esta en la lista el texto 
+		//printf("\ntexto ntrante:[%s]:\n",texto);
+        band = 1; // si esta en la lista el texto
     	} else {
-			//printf("\n**Lista= %s, Texto=%s**\n",q->com_name,texto);
       	 	 q=q->liga;// si no esta pasa al siguiente nodo
     	}
  }//end while
@@ -105,7 +104,7 @@ void openDocument(char *texto, FILE *archivo,nod *p){
 	char temp[MAX_DATO_IN]; //---===  RECUPERA EL TEXTO DEL ARCHIVO DE COMPILACION
 	char palabra[1];	//almacena temporalmente el comando definido en las  primeras lineas del comando.
 	int bandera;
-	int i=0;
+	int i=0, num;
 	archivo = fopen(texto,"r"); //---=== abre el documento de la linea de comando
 
  if (archivo== NULL){
@@ -134,18 +133,26 @@ void openDocument(char *texto, FILE *archivo,nod *p){
 		}
 }//---===	DETERMINA LA ENTRADA DEL ARCHIVO A COMPILAR, LO ANALIZA, Y POSTERIORMENTE EJECUTA LA INSTRUCCION.
 
-void Excecuting_com(int i, char *temp,nod *p){
+void Excecuting_com(int i,char *temp,nod *p){
 	char valida[1];
-	int bandera;
+	int bandera = 0;
+	int j=0;
 				//if((int)temp[i]==39 && (  ((int)temp[i+1]>=97 && (int)temp[i+1]<=122) || ((int)temp[i+1]>=65 && (int)temp[i+1]<=90)  ||((int) temp[i+1])  /**/) ){
-				if((int)temp[i]==39 && (int)temp[i+1]>=48){
-					strncat(valida,temp,i);
-				//	valida[1]=temp[i];
-					printf("\nvalida[%s]\n",valida);
+				if((int)temp[i]==96 && (int)temp[i+1]>=48){
+				valida[0]=temp[i];
+				//printf("\ntexto:%s===%d\n",valida,i);
+				//	printf("\nvalida[%s]\n",valida);
 					bandera = busca(p,valida);
+				}//end if para el comando de lectura
+
+				
 				if(bandera){
-					printf("Encontre la data[%d][%c]\n",bandera,temp[i+1]);
-				}
-					///("Pase el IF:[%d]\n",i);
+					printf("\nEncontre la data[%d][%c]\n",bandera,temp[i+1]);
+				for(j = 1;(int)temp[i+j]!=96;j++){
+					printf("%c",temp[i+j]);
+				} //entraccion del texto correcta
+					
+				
+
 				}
 }
