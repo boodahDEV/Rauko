@@ -93,6 +93,7 @@ int busca(nod *p, char *texto){
     if (strcmp(q->com_name,texto)==0) {
         band = 1; // si esta en la lista el texto 
     	} else {
+			printf("\n**Lista= %s, Texto=%s**\n",q->com_name,texto);
       	 	 q=q->liga;// si no esta pasa al siguiente nodo
     	}
  }//end while
