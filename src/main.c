@@ -93,7 +93,7 @@ int busca(nod *p, char *texto){
     if (strcmp(q->com_name,texto)==0) {
         band = 1; // si esta en la lista el texto 
     	} else {
-			printf("\n**Lista= %s, Texto=%s**\n",q->com_name,texto);
+			//printf("\n**Lista= %s, Texto=%s**\n",q->com_name,texto);
       	 	 q=q->liga;// si no esta pasa al siguiente nodo
     	}
  }//end while
@@ -135,11 +135,12 @@ void openDocument(char *texto, FILE *archivo,nod *p){
 }//---===	DETERMINA LA ENTRADA DEL ARCHIVO A COMPILAR, LO ANALIZA, Y POSTERIORMENTE EJECUTA LA INSTRUCCION.
 
 void Excecuting_com(int i, char *temp,nod *p){
-	char valida[1];
+	char valida[2];
 	int bandera;
 				//if((int)temp[i]==39 && (  ((int)temp[i+1]>=97 && (int)temp[i+1]<=122) || ((int)temp[i+1]>=65 && (int)temp[i+1]<=90)  ||((int) temp[i+1])  /**/) ){
 				if((int)temp[i]==39 && (int)temp[i+1]>=48){
-					valida[0]=temp[i];
+					strncat(valida,temp,i);
+				//	valida[1]=temp[i];
 					printf("\nvalida[%s]\n",valida);
 					bandera = busca(p,valida);
 				if(bandera){
