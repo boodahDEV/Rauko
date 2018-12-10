@@ -5,13 +5,15 @@
 #include <string.h>
 
 
-#define MAX_DATO_IN 80
+#define MAX_DATO_IN 180
 
+//---=== ESTRUCTURA PRINCIPAL DE ALAFABETOS ===---
 struct com_in_sys {
 	char com_name [3];
 	char cod_asc[8];
 	struct com_in_sys *liga;
 };
+//---=== ESTRUCTURA PRINCIPAL DE ALAFABETOS ===---
 
 typedef struct com_in_sys nod;
 nod * memoria (nod *); 
@@ -20,6 +22,10 @@ void imprimir(nod *);
 int busca(nod *, char *);
 void openDocument(char *, FILE *, nod *);
 void Excecuting_com(int, char *,nod *);
+void pause(){
+	getchar();
+	getchar();
+}
 
 //---===	MAIN	===---	
 void main (){
@@ -61,6 +67,7 @@ nod * creainicio (nod *p, FILE *archivo1,FILE *archivo2){
 
 	if (archivo1 == NULL && archivo2 == NULL){
             printf("\nError en el analicis1. \n\n");
+			pause();
         }else{
           while (feof(archivo1) == 0 && feof(archivo2)==0){  // el while se ejecuta hasta que encuentre el final del archivo
 			  if(i==1){
@@ -90,7 +97,6 @@ int busca(nod *p, char *texto){
 	int band = 0;
  while(q != NULL && !band){
     if (strcmp(q->com_name,texto)==0) {
-		//printf("\ntexto ntrante:[%s]:\n",texto);
         band = 1; // si esta en la lista el texto
     	} else {
       	 	 q=q->liga;// si no esta pasa al siguiente nodo
@@ -109,16 +115,17 @@ void openDocument(char *texto, FILE *archivo,nod *p){
 
  if (archivo== NULL){
             printf("\nError en el analicis2. \n\n");
+			pause();
         }else{
           while (feof(archivo) == 0){
 			  fgets(temp,MAX_DATO_IN,archivo);//---=== TEMP[] TIENE LA DATA DEL ARCHIVO
 		  }
 		  for(i = 0; i < 50; i++){
 			   if(temp[i]=='l' && temp[i+1]=='m'){
-				   //i=i-1;
 					//strncpy(palabra,temp,2);	este copiaba la cadena entera osea todo temp, por eso lo comente
+					
 					strncat(palabra,temp,2);
-					printf("\t\t[%s][%d]",palabra,i);
+					//printf("\t\t[%s][%d]",palabra,i);
 					bandera = busca(p,palabra);
 					//break;
 				}
@@ -128,7 +135,6 @@ void openDocument(char *texto, FILE *archivo,nod *p){
 						Excecuting_com(i,temp,p);
 						//DEBO LLAMAR A OTRO METODO 
 					}
-
 			}//end for
 		}
 }//---===	DETERMINA LA ENTRADA DEL ARCHIVO A COMPILAR, LO ANALIZA, Y POSTERIORMENTE EJECUTA LA INSTRUCCION.
@@ -140,19 +146,15 @@ void Excecuting_com(int i,char *temp,nod *p){
 				//if((int)temp[i]==39 && (  ((int)temp[i+1]>=97 && (int)temp[i+1]<=122) || ((int)temp[i+1]>=65 && (int)temp[i+1]<=90)  ||((int) temp[i+1])  /**/) ){
 				if((int)temp[i]==96 && (int)temp[i+1]>=48){
 				valida[0]=temp[i];
-				//printf("\ntexto:%s===%d\n",valida,i);
-				//	printf("\nvalida[%s]\n",valida);
 					bandera = busca(p,valida);
 				}//end if para el comando de lectura
 
 				
 				if(bandera){
-					printf("\nEncontre la data[%d][%c]\n",bandera,temp[i+1]);
-				for(j = 1;(int)temp[i+j]!=96;j++){
-					printf("%c",temp[i+j]);
-				} //entraccion del texto correcta
-					
-				
-
+						for(j = 1;(int)temp[i+j]!=96;j++){
+							printf("%c",temp[i+j]);
+							//pause();
+						} //entraccion del texto correcta
+						pause();
 				}
 }
