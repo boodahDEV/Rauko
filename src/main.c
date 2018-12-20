@@ -22,6 +22,7 @@ void imprimir(nod *);
 int busca(nod *, char *);
 void openDocument(char *, FILE *, nod *);
 void Excecuting_com(int, char *,nod *);
+void endBuffer(nod *);
 void pause(){
 	getchar();
 	getchar();
@@ -37,7 +38,7 @@ void main (){
 	scanf("%[^\n]",texto_entrada);
 	p=creainicio(p,archivo1,archivo2);
 	openDocument(texto_entrada,archivo,p);
-
+	endBuffer(p);
 }//---=== END MAIN()
 //---===	MAIN	===---	
 
@@ -114,7 +115,7 @@ void openDocument(char *texto, FILE *archivo,nod *p){
 	archivo = fopen(texto,"r"); //---=== abre el documento de la linea de comando
 
  if (archivo== NULL){
-            printf("\nError en el analicis2. \n\n");
+            printf("\nError, ruta del archivo incorrecta. \n\n");
 			pause();
         }else{
           while (feof(archivo) == 0){
@@ -157,4 +158,8 @@ void Excecuting_com(int i,char *temp,nod *p){
 						} //entraccion del texto correcta
 						pause();
 				}
-}
+}//---=== FIN EJECUTA COMANDO!
+
+void endBuffer(nod *p){
+	free(p);
+}// FIN LIBERA EL BUFFER!
