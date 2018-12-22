@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <unistd.h>
 #include <string.h>
-
 
 #define MAX_DATO_IN 180
 
@@ -23,10 +21,7 @@ int busca(nod *, char *);
 void openDocument(char *, FILE *, nod *);
 void Excecuting_com(int, char *,nod *);
 void endBuffer(nod *);
-void pause(){
-	getchar();
-	getchar();
-}
+void pause();
 
 //---===	MAIN	===---	
 void main (){
@@ -34,7 +29,7 @@ void main (){
 		FILE *archivo1,*archivo2,*archivo;
 		char texto_entrada[MAX_DATO_IN];
 
-    system("cls"); //---=== EN UNIX EX CLEAR		EN WINDOWS ES CLS
+    system("clear"); //---=== EN UNIX EX CLEAR		EN WINDOWS ES CLS
 	scanf("%[^\n]",texto_entrada);
 	p=creainicio(p,archivo1,archivo2);
 	openDocument(texto_entrada,archivo,p);
@@ -107,7 +102,7 @@ int busca(nod *p, char *texto){
 }//---=== BUSCA DENTRO DE LA LISTA, O ALFABETO
 
 
-void openDocument(char *texto, FILE *archivo,nod *p){
+void openDocument(char *texto, FILE *archivo,nod *p){  // ---==== UNIR CON LA VERSION DEL MAIN0.0.01_. EN EL CUAL NECESITO GUARDAR EL ARCHIVO
 	char temp[MAX_DATO_IN]; //---===  RECUPERA EL TEXTO DEL ARCHIVO DE COMPILACION
 	char palabra[1];	//almacena temporalmente el comando definido en las  primeras lineas del comando.
 	int bandera;
@@ -163,3 +158,7 @@ void Excecuting_com(int i,char *temp,nod *p){
 void endBuffer(nod *p){
 	free(p);
 }// FIN LIBERA EL BUFFER!
+void pause(){
+	getchar();
+	getchar();
+}//FIN PAUSA
