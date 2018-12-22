@@ -39,7 +39,7 @@ pthread_t hilo3;
 
 void *ejecuta(void *x){
     char *a = (char *)x;
-    printf("%c.",a[0]);
+    printf("%c.",a[1]);
 }
 
 
@@ -57,10 +57,13 @@ void main(int argc, char const *argv[])
    printf("tengo t: %d\n",tam);
     printf("tengo a: %d\n",(int)sizeof(hilos));
 
-    for(int i = 0; i < (int)sizeof(hilos); i++){
+    for(int i = 0; i < tam; i++){
+     
       pthread_create(&hilos[i],NULL,ejecuta,&cadena[i]);
-       // pthread_join(hilos[i], NULL);
     }
+        
+        //pthread_join(hilos[0], NULL);
+      
     
    // pthread_join(hilo1, NULL); obligatorio poner el join ya que el hilo main siempre muere antes que se ejecuta
     //pthread_join(hilo2, NULL);
