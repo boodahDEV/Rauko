@@ -20,7 +20,7 @@ void *unido(void *args){
 
 void *saludo(void * args){
 char *cadena="\nAdemas, esta anidado a traves de un metodo!";
-char * cadena2= (char *)args;
+char *cadena2= (char *)args;
 pthread_t hilo3;
     printf("\n");
     for(int i = 0; i < strlen(cadena2); i++)
