@@ -2,31 +2,38 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <stdio.h>
- 
+#include <sys/wait.h>
+#include  <sys/mman.h>
+
 void main(){
     pid_t pid;
-    pthread_t h;
     int test = 5;
+    int *number = (int*)mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE, 
+               MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+     *number = 5;
+
 
     switch(pid=fork()){
         case 0: {
          printf("Soy el hijo (%d, hijo de %d)\n", getpid(),getppid());
-         for(int i=1;i<10;i++){
-             if(i%2!=0)
-             printf("%i\n",i);
+         for(int i=0;i<10;++i){
+            usleep(70000);
+            printf ("CHILD -- Number: %d\n", *number);
+            *number=i;
          }
-         printf("\n#-> %d\n",++test);
-        }
+        }//end case 0
         case -1: {
             printf("*#*\n");
             break;
         }
         default:
             printf("Soy el padre (%d, hijo de %d)\n", getpid(),getppid());
-             for(int i=0;i<10;i+=2){
-                 printf("%i\n",i);
+             for(int i=20;i<30;++i){
+                 usleep(70000);
+                printf ("*****MAIN -- Number: %d\n", *number);
+                *number=i;
             }
-            printf("\n#-> %d\n",--test);
+
     }//end switch
 
     /* if ( (pid=fork()) == 0 ){ 
@@ -47,4 +54,6 @@ void main(){
     else{ 
         printf("Soy el padre (%d, hijo de %d)\n", getpid(),getppid());
     } */
+      wait(NULL);
+      munmap(number, sizeof(int));
 }
