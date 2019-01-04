@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
+//#include <pthread.h>
 #include <string.h>
 
 #define MAX_DATO_IN 180
 
 //---=== ESTRUCTURA PRINCIPAL DE ALAFABETOS ===---
-struct com_in_sys {
+struct ALPHABETIC_STRUCTURE {
 	char com_name [3];
 	char cod_asc[8];
-	struct com_in_sys *liga;
+	struct ALPHABETIC_STRUCTURE *liga;
 };
 //---=== ESTRUCTURA PRINCIPAL DE ALAFABETOS ===---
 
-typedef struct com_in_sys nod;
+typedef struct ALPHABETIC_STRUCTURE nod;
 nod * memoria (nod *); 
-nod * creainicio (nod*, FILE *,FILE *);
+nod * CREATES_ALPHABET(nod*, FILE *,FILE *);
 void imprimir(nod *);
 int busca(nod *, char *);
 void openDocument(char *, FILE *, nod *);
@@ -31,7 +31,7 @@ void main (){
 
     system("clear"); //---=== EN UNIX EX CLEAR		EN WINDOWS ES CLS
 	scanf("%[^\n]",texto_entrada);
-	p=creainicio(p,archivo1,archivo2);
+	p=CREATES_ALPHABET(p,archivo1,archivo2);
 	openDocument(texto_entrada,archivo,p);
 	endBuffer(p);
 }//---=== END MAIN()
@@ -39,7 +39,7 @@ void main (){
 
 
 nod * memoria (nod * x){
-	x=(nod*)malloc(sizeof(struct com_in_sys)); // libera espacio en memoria a un nodo
+	x=(nod*)malloc(sizeof(struct ALPHABETIC_STRUCTURE));
 	return (x); 
 }//---=== LIBERA MEMORIA
 
@@ -54,7 +54,7 @@ void imprimir(nod * p){
 		printf("--------------------------------------\n");
 }
 
-nod * creainicio (nod *p, FILE *archivo1,FILE *archivo2){
+nod * CREATES_ALPHABET(nod *p, FILE *archivo1,FILE *archivo2){
 	int i=0;
 	nod *q;
 	archivo1 = fopen("../dll/data_1.dll","r");
