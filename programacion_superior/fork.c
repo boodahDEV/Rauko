@@ -29,7 +29,6 @@ int main()
      printf("\n\n\tID del HIJO: %d y el papa es: %d\n",getpid(),getppid());
       exit(0);
 }else{
-    printf("*#*");
       for (i=20; i<30; ++i){
       usleep(70000);
       printf ("*****MAIN -- Number: %d\n", *number);
@@ -39,6 +38,7 @@ int main()
     printf("\n\n\tID del PADRE: %d y el padre es: %d\n",getpid(),getppid());
 
 }
+printf("Test: %d",getpid());
   wait(NULL);
   //free(number);
   munmap(number, sizeof(int));
