@@ -21,25 +21,28 @@ int main(int argc, char const *argv[])
     TYPE_SYSTEM_EXEC(sys);     // tipo de sistema en ejecucion.
 
     //======= TODO APARTIR DE AQUI SE DUPLICARA EN EL PROCESO HIJO, TOMAR EN CUENTA AL TRATAR DE MAXIMIZAR EL CODIGO =======//
-   switch( RESULT_FORK = fork()){
-       case -1 : {
+    switch (RESULT_FORK = fork())
+    {
+    case -1:
+    {
         printf("ERROR, NO HAY MEMORIA SUFICIENTE PARA EJECUTAR LA ACCION.\n\n\n"); //IDEAR UNA LIBRERIA PARA LA MANIPULACION DE ERRORES!
         exit(EXIT_FAILURE);
-       }
-       case 0 : {
+    }
+    case 0:
+    {
         pthread_create(&LEX_THREAD_MAIN, NULL, lexan, (void *)sys);
         printf("\n\tID del HIJO: %d y el papa es: %d\n", getpid(), getppid());
         pthread_join(LEX_THREAD_MAIN, NULL); //ESTE PROCESOS ESPERA A QUE EL HILO CULMINE
         //pthread_detach(LEX_THREAD_MAIN);
         exit(EXIT_SUCCESS);
-       }
-       default : {
+    }
+    default:
+    {
         printf("\n\tID del PADRE: %d y el padre es: %d\n", getpid(), getppid());
         pthread_join(LEX_THREAD_MAIN, NULL);
         exit(EXIT_SUCCESS);
-       }
-
-   }//end switch
+    }
+    } //end switch
     //======= NO COLOCAR NADA DESPUES DE AQUI, SI CONSIDERAS QUE EL PROCESO PADRE EJECUTE ALGO INDEPENDIENTE, DEBE SER DENTRO DEL IF, Y LO MISMO EN EL HIJO. ======/
 
 } //end main
