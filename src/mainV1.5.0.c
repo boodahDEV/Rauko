@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <pthread.h>
 
 #if UNIX
@@ -16,9 +17,11 @@ void *lexan(void *);
 int main(int argc, char const *argv[])
 {
     char texto_entrada[50];
-    static pid_t RESULT_FORK;
+    int STATUS;
+    static pid_t RESULT_FORK, PID_SON, PID_DAD;
     pthread_t LEX_THREAD_MAIN; // hilo de ejecucion del analicis lexico!
     TYPE_SYSTEM_EXEC(sys);     // tipo de sistema en ejecucion.
+    PID_DAD = getpid();
     //======= TODO APARTIR DE AQUI SE DUPLICARA EN EL PROCESO HIJO, TOMAR EN CUENTA AL TRATAR DE MAXIMIZAR EL CODIGO =======//
     switch (RESULT_FORK = fork())
     {
@@ -28,17 +31,18 @@ int main(int argc, char const *argv[])
     }
     case 0:
     {
-        printf("Hola hijo! %d\n",getpid());
+        PID_SON = getpid();
+        printf("Hola hijo! %d\n",PID_SON);
         pthread_create(&LEX_THREAD_MAIN, NULL, lexan, (void *)sys);
         pthread_join(LEX_THREAD_MAIN, NULL); //ESTE PROCESOS ESPERA A QUE EL HILO CULMINE
         //pthread_detach(LEX_THREAD_MAIN);
-        exit(EXIT_SUCCESS);
+        exit(getpid() > PID_DAD);
     }
     default:
     {
-        printf("Hola papa! %d\n",getpid());
-     //  pthread_join(LEX_THREAD_MAIN, NULL);
-     //   exit(EXIT_SUCCESS);
+        waitpid (PID_SON, &STATUS, 0);
+        printf("Hola papa! %d\n",PID_DAD);
+        exit(EXIT_SUCCESS);
     }
     } //end switch
     //======= NO COLOCAR NADA DESPUES DE AQUI, SI CONSIDERAS QUE EL PROCESO PADRE EJECUTE ALGO INDEPENDIENTE, DEBE SER DENTRO DEL IF, Y LO MISMO EN EL HIJO. ======/
@@ -55,5 +59,5 @@ void *lexan(void *args)
         usleep(500000);
         i++;
     }
-    printf("\nFin del hilo lexan!\n");
+   // printf("\nFin del hilo lexan!\n");
 }//fin analicis lexico
