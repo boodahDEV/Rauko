@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include "include/lexan.h"
 #include <pthread.h>
 
 #if UNIX
@@ -32,7 +33,6 @@ int main(int argc, char const *argv[])
     case 0:
     {
         PID_SON = getpid();
-        printf("Hola hijo! %d\n",PID_SON);
         pthread_create(&LEX_THREAD_MAIN, NULL, lexan, (void *)sys);
         pthread_join(LEX_THREAD_MAIN, NULL); //ESTE PROCESOS ESPERA A QUE EL HILO CULMINE
         //pthread_detach(LEX_THREAD_MAIN);
@@ -40,8 +40,7 @@ int main(int argc, char const *argv[])
     }
     default:
     {
-        waitpid (PID_SON, &STATUS, 0);
-        printf("Hola papa! %d\n",PID_DAD);
+        waitpid (PID_SON, &STATUS, 0); //ESPERA A LA FINALIZACION DEL PROCESO HIJO!
         exit(EXIT_SUCCESS);
     }
     } //end switch
@@ -52,10 +51,13 @@ int main(int argc, char const *argv[])
 void *lexan(void *args)
 { // para pasar multiples parametros a esta funciones de hilo, debe ser por estructuras!
     char *t_sys = (char *)args;
+    char Arr_Com[40];
+    char ALPHABET_1[]= "../dll/data_1.dll";
     int i = 0;
-    while (i != 15)
+    LOAD_ALPHABET(ALPHABET_1,Arr_Com);
+    while (i != 15 && t_sys== "UNIX") 
     { //CICLO DE PRUEBA
-        printf("--#%s#--\n", t_sys);
+        printf("--# %c #--\n", Arr_Com[i]);
         usleep(500000);
         i++;
     }
