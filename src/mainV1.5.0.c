@@ -15,6 +15,8 @@
 #endif
 void *lexan(void *);
 
+
+
 int main(int argc, char const *argv[])
 {
     char texto_entrada[50];
@@ -32,8 +34,14 @@ int main(int argc, char const *argv[])
     }
     case 0:
     {
+        struct ALPHABETIC_STRUCTURE
+        {
+            char reserved_words[3];
+            char cod_asc_words[8];
+            struct ALPHABETIC_STRUCTURE *liga;
+        }AS;
         PID_SON = getpid();
-        pthread_create(&LEX_THREAD_MAIN, NULL, lexan, (void *)sys);
+        pthread_create(&LEX_THREAD_MAIN, NULL, lexan, (void *)&AS);
         pthread_join(LEX_THREAD_MAIN, NULL); //ESTE PROCESOS ESPERA A QUE EL HILO CULMINE
         //pthread_detach(LEX_THREAD_MAIN);
         exit(getpid() > PID_DAD);
@@ -50,16 +58,14 @@ int main(int argc, char const *argv[])
 
 void *lexan(void *args)
 { // para pasar multiples parametros a esta funciones de hilo, debe ser por estructuras!
-    char *t_sys = (char *)args;
+    struct ALPHABETIC_STRUCTURE *AS;
+    AS = (struct ALPHABETIC_STRUCTURE *)args; 
     char Arr_Com[40];
+    
     char ALPHABET_1[]= "../dll/data_1.dll";
     int i = 0;
     LOAD_ALPHABET(ALPHABET_1,Arr_Com);
-    while (i != 15 && t_sys== "UNIX") 
-    { //CICLO DE PRUEBA
-        printf("--# %c #--\n", Arr_Com[i]);
-        usleep(500000);
-        i++;
-    }
-   // printf("\nFin del hilo lexan!\n");
+    
+
+
 }//fin analicis lexico
