@@ -5,7 +5,7 @@ void LOAD_ALPHABET(char * , char *);
 
 
 
-void LOAD_ALPHABET(char *url, char *Arr_Com)
+void LOAD_ALPHABET(char *url,  char *Arr_Com)
 {
     FILE *archivo;
     archivo = fopen(url, "r");
@@ -18,7 +18,9 @@ void LOAD_ALPHABET(char *url, char *Arr_Com)
     {
         for (int i = 0; i < 40; i++)
         {
-            fscanf(archivo, "%c", &Arr_Com[i]);
+            fscanf(archivo, "%c", &Arr_Com[i]); 
+            printf("%d\n",i);
+            //Carga todas las palabras reseradas en el arreglo
         }
     }
     fclose(archivo);
