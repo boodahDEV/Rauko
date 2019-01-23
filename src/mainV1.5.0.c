@@ -60,11 +60,10 @@ void *lexan(void *args)
 { // para pasar multiples parametros a esta funciones de hilo, debe ser por estructuras!
     struct ALPHABETIC_STRUCTURE *AS;
     AS = (struct ALPHABETIC_STRUCTURE *)args; 
-    char Arr_Com[40];
-    
+    char  m_comando[12][2]={0};
     char ALPHABET_1[]= "../dll/data_1.dll";
     int i = 0;
-    LOAD_ALPHABET(ALPHABET_1,Arr_Com);
+    LOAD_ALPHABET(ALPHABET_1,m_comando);
     
 
 
