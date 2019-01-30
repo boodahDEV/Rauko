@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # C_compiler
 
 C_compiler es un compilador básico elaborado en lenguaje C, capas de procesar y simular el comportamiento de un compilador en tiempo real.
@@ -6,6 +7,16 @@ Basado en procesar su propio tipo de lenguaje ~(aun sin un nombre en específico
 ### Ejecución y compilación 
 Para ejecutar básicamente basta con ir mediante el terminal a la ruta `C_compiler/src` y colocamos el siguiente comando para compilar:
 `gcc main.c -o ../Runner/main` y para ejecutar `../Runner/main`. _PD: El archivo fuente debe estar dentro la carpeta donde esta el fuente._ 
+=======
+# Rauko
+
+Rauko es un compilador básico elaborado en lenguaje C, capas de procesar y simular el comportamiento de un compilador en tiempo real.
+Basado en procesar su propio tipo de lenguaje ~(aun sin un nombre en específico)~ el cual está basado en una combinación del propio **C** y algo de **Script** básico.
+
+### Ejecución y compilación
+Para ejecutar básicamente basta con ir mediante el terminal a la ruta `Rauko/src` y colocamos el siguiente comando para compilar:
+`gcc main.c -o ../Runner/main` y para ejecutar `../Runner/main`. _PD: El archivo fuente debe estar dentro la carpeta donde esta el fuente._
+>>>>>>> d47f1d91807c6bfe907817b540c04498f11b3cdd
 
 En futuras versiones incluira de forma nativa un script ejecutable, tanto para _Windows_ como para sistemas _Linux_.
 - #### Es importante ejecutar mediante el terminal usando el compilador C en GCC en el cual podemos instalar en cualquier plataforma.
