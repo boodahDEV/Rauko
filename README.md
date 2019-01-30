@@ -1,4 +1,5 @@
 # Rauko
+
 Rauko es un compilador básico elaborado en lenguaje C, capas de procesar y simular el comportamiento de un compilador en tiempo real.
 Basado en procesar su propio tipo de lenguaje ~(aun sin un nombre en específico)~ el cual está basado en una combinación del propio **C** y algo de **Script** básico.
 
