@@ -1,7 +1,7 @@
 // AQUI SE CONSTRUIRA LA LIBRERIA DEL SISTEMA LEXICO EN EL CUAL SUS FUNCIONES HARAN LAS BUSQUEDA Y CLASIFICACION POR TOKEN.
 void LOAD_ALPHABET(char *, char[][2]);
 
-void LOAD_ALPHABET(char *url, char m_comando[][2])
+void LOAD_ALPHABET(char *url, char MCOM[][2])
 {
     FILE *archivo;
     archivo = fopen(url, "r");
@@ -21,12 +21,12 @@ void LOAD_ALPHABET(char *url, char m_comando[][2])
             fscanf(archivo, "%c", &Arr_Com[i]); //De alguna manera esto en el futuro debe ser directo a la matriz
             if (Arr_Com[i] != '\n' && Arr_Com[i])
             {
-                m_comando[cant_pal][res_pal] = Arr_Com[i];
+                MCOM[cant_pal][res_pal] = Arr_Com[i];
                 res_pal++;
             }
             else
             {
-                m_comando[cant_pal][res_pal] = '\0';
+                MCOM[cant_pal][res_pal] = '\0';
                 res_pal = 0;
                 cant_pal++;
             }

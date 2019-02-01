@@ -15,11 +15,9 @@
 #endif
 void *lexan(void *);
 
-
-
 int main(int argc, char const *argv[])
 {
-    char texto_entrada[50];
+    char TEXT[50];
     int STATUS;
     static pid_t RESULT_FORK, PID_SON, PID_DAD;
     TYPE_SYSTEM_EXEC(sys);     // tipo de sistema en ejecucion.
@@ -36,13 +34,13 @@ int main(int argc, char const *argv[])
         pthread_t LEX_THREAD_MAIN; // hilo de ejecucion del analicis lexico!
         struct ALPHABETIC_STRUCTURE
         {
-            char reserved_words[3];
-            char cod_asc_words[8];
+            char reserved_words[3]; //PALABRAS RESERVADAS
+            char cod_asc_words[8];  //CODIGO ASCII DE LAS PALABRAS RESERVADAS
             struct ALPHABETIC_STRUCTURE *liga;
         }AS;
         PID_SON = getpid();
-        pthread_create(&AS.LEX_THREAD_MAIN, NULL, lexan, (void *)&AS);
-        pthread_join(AS.LEX_THREAD_MAIN, NULL); //ESTE PROCESOS ESPERA A QUE EL HILO CULMINE
+        pthread_create(&LEX_THREAD_MAIN, NULL, lexan, (void *)&AS);
+        pthread_join(LEX_THREAD_MAIN, NULL); //ESTE PROCESOS ESPERA A QUE EL HILO CULMINE
         //pthread_detach(LEX_THREAD_MAIN);
         exit(getpid() > PID_DAD);
     }
@@ -50,18 +48,19 @@ int main(int argc, char const *argv[])
     {
         waitpid (PID_SON, &STATUS, 0); //ESPERA A LA FINALIZACION DEL PROCESO HIJO!
         exit(EXIT_SUCCESS);
+
+        /* more code here for process father */
     }
     } //end switch
     //======= NO COLOCAR NADA DESPUES DE AQUI, SI CONSIDERAS QUE EL PROCESO PADRE EJECUTE ALGO INDEPENDIENTE, DEBE SER DENTRO DEL IF, Y LO MISMO EN EL HIJO. ======/
-
 } //end main
 
 void *lexan(void *args)
 { // para pasar multiples parametros a esta funciones de hilo, debe ser por estructuras!
     struct ALPHABETIC_STRUCTURE *AS;
-    AS = (struct ALPHABETIC_STRUCTURE *)args; 
-    char  m_comando[12][2]={0};
+    AS = (struct ALPHABETIC_STRUCTURE *)args;
+    char  MCOM[12][2]={0};
     char ALPHABET_1[]= "../dll/data_1.dll";
     int i = 0;
-    LOAD_ALPHABET(ALPHABET_1,m_comando);//pthread_exit(AS->LEX_THREAD_MAIN); //recordar trate de cerrar el hilo de ejecucion
+    LOAD_ALPHABET(ALPHABET_1,MCOM);//pthread_exit(AS->LEX_THREAD_MAIN); //recordar trate de cerrar el hilo de ejecucion
 }//fin analicis lexico
