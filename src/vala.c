@@ -64,26 +64,33 @@ void *lexan(void *args)
 
 
     char **ALPHABET_M = (char **) malloc (6*sizeof(char *));
-        for(int i = 0; i < 6; i++){
-            ALPHABET_M[i]=(char *) malloc ( 10 *sizeof(char));
+        for(int i = 0; i < 6; i++)
+            ALPHABET_M[i]=(char *) malloc ( 20 *sizeof(char));
             //strcpy(ALPHABET_M[1], "mundo");
-        }
-        strcpy(*(ALPHABET_M), "Hola");
-        strcpy(*(ALPHABET_M+1), "Hola2");
-      //  strcpy(*(ALPHABET_M+2), "Hola mundo");
+        strcpy(*(ALPHABET_M),   "../dll/data_pr.dll"); printf("[");printf("\x1B[32m Ok \x1B[0m"); printf("]\n");
+        strcpy(*(ALPHABET_M+1), "../dll/data_op.dll");
+        strcpy(*(ALPHABET_M+2), "../dll/data_se.dll");
+
+
+        //strcpy(*(ALPHABET_M+2), "Hola mundo");
         //**(ALPHABET_M ) = "Hola mundo";
         //printf("Contenido de la matriz dinamica: %s\n",*(ALPHABET_M));
-        for(int i = 0; i < 6; i++)
+      /*for(int i = 0; i < 6; i++)
         {
-            for(int j = 0; j < 10; j++)
+            for(int j = 0; j < 20; j++)
             {
-                printf("%s\t",*(ALPHABET_M+i+j*10));
-            }
-            printf("\n");
-        }
-        
 
-    int i = 0;
+              if(ALPHABET_M[i][j]!='\0'){
+                printf("%c [ %d ][ %d ][ %p ]\n",ALPHABET_M[i][j],i,j,(ALPHABET_M[i]+j));}
+            }
+            printf("\n\n");
+        }*/
+
+
+       // free(ALPHABET_M); //--
+                          //---- Estas dos son para liberar la memoria de manera correcta, deberia ser luego de su procesado!
+       // ALPHABET_M = NULL;//-
+       
     //se comento LOAD_ALPHABET porque la matriz de alfabetos se encuentra bajo pruebas.
     //LOAD_ALPHABET(ALPHABET_M,MCOM);//pthread_exit(AS->LEX_THREAD_MAIN); //recordar trate de cerrar el hilo de ejecucion
 }//fin analicis lexico
