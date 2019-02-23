@@ -9,10 +9,12 @@
     #include <unistd.h>
     #include <sys/wait.h>
     #define sys "UNIX"
-    #define TYPE_SYSTEM_EXEC(sys) ((sys == "UNIX") ? printf("Ejecutando en sistema basado en GNU/LINUX.\n\n\n") : printf("Ejecuntando en sistema basado en Windows/Microsoft.\n\n\n"))
+        #define THIS_OK() (printf("\x1B[32m O K "))
+        #define THIS_ERROR() (printf("\x1B[31mERROR"))
+        #define THIS_NRM(a) ((a == 0)? printf("\x1B[0m ["): printf("\x1B[0m]"))
 #else
     #define sys "WIN"
-    #define TYPE_SYSTEM_EXEC(sys) ((sys == "WIN") ? printf("Ejecutando en sistema basado en Windows/Microsoft.\n\n\n") : printf("Ejecuntando en sistema basado en GNU/LINUX..\n\n\n"))
+  //  #define TYPE_SYSTEM_EXEC(sys) ((sys == "WIN") ? printf("Ejecutando en sistema basado en Windows/Microsoft.\n\n\n") : printf("Ejecuntando en sistema basado en GNU/LINUX..\n\n\n"))
 #endif
 void *lexan(void *);
 
@@ -21,7 +23,7 @@ int main(int argc, char const *argv[])
     char TEXT[50];
     int STATUS;
     static pid_t RESULT_FORK, PID_SON, PID_DAD;
-    TYPE_SYSTEM_EXEC(sys);     // tipo de sistema en ejecucion.
+    //TYPE_SYSTEM_EXEC(sys);     // tipo de sistema en ejecucion.
     PID_DAD = getpid();
     //======= TODO APARTIR DE AQUI SE DUPLICARA EN EL PROCESO HIJO, TOMAR EN CUENTA AL TRATAR DE MAXIMIZAR EL CODIGO =======//
     switch (RESULT_FORK = fork())
@@ -67,8 +69,8 @@ void *lexan(void *args)
         for(int i = 0; i < 6; i++)
             ALPHABET_M[i]=(char *) malloc ( 20 *sizeof(char));
             //strcpy(ALPHABET_M[1], "mundo");
-        strcpy(*(ALPHABET_M),   "../dll/data_pr.dll"); printf("[");printf("\x1B[32m Ok \x1B[0m"); printf("]\n");
-        strcpy(*(ALPHABET_M+1), "../dll/data_op.dll");
+        strcpy(*(ALPHABET_M),   "../dll/data_pr.dll"); //THIS_NRM(0);THIS_OK();THIS_NRM(1); printf(" Correcta carga del pr.\n");
+        strcpy(*(ALPHABET_M+1), "../dll/data_op.dll"); //THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf(" Correcta carga del pr.\n");
         strcpy(*(ALPHABET_M+2), "../dll/data_se.dll");
 
 
@@ -94,3 +96,4 @@ void *lexan(void *args)
     //se comento LOAD_ALPHABET porque la matriz de alfabetos se encuentra bajo pruebas.
     //LOAD_ALPHABET(ALPHABET_M,MCOM);//pthread_exit(AS->LEX_THREAD_MAIN); //recordar trate de cerrar el hilo de ejecucion
 }//fin analicis lexico
+
