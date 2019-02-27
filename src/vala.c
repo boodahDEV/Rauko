@@ -18,9 +18,16 @@
 #endif
 void *lexan(void *);
 
+        struct ALPHABETIC_STRUCTURE
+        {
+            char reserved_words[3]; //PALABRAS RESERVADAS
+            char cod_asc_words[8];  //CODIGO ASCII DE LAS PALABRAS RESERVADAS
+            struct ALPHABETIC_STRUCTURE *liga;
+        };
+
 int main(int argc, char const *argv[])
 {
-    char TEXT[50];
+    //char TEXT[50];
     int STATUS;
     static pid_t RESULT_FORK, PID_SON, PID_DAD;
     //TYPE_SYSTEM_EXEC(sys);     // tipo de sistema en ejecucion.
@@ -35,13 +42,10 @@ int main(int argc, char const *argv[])
     case 0:
     {
         pthread_t LEX_THREAD_MAIN; // hilo de ejecucion del analicis lexico!
-        struct ALPHABETIC_STRUCTURE
-        {
-            char reserved_words[3]; //PALABRAS RESERVADAS
-            char cod_asc_words[8];  //CODIGO ASCII DE LAS PALABRAS RESERVADAS
-            struct ALPHABETIC_STRUCTURE *liga;
-        }AS;
-        PID_SON = getpid();
+        typedef struct ALPHABETIC_STRUCTURE *nodo;
+        nodo *AS = (nodo *)malloc(sizeof(struct ALPHABETIC_STRUCTURE));
+        PID_SON = getpid(); //DEVUELVE EL ID DEL PROCESO HIJO
+
         pthread_create(&LEX_THREAD_MAIN, NULL, lexan, (void *)&AS);
         pthread_join(LEX_THREAD_MAIN, NULL); //ESTE PROCESOS ESPERA A QUE EL HILO CULMINE
         //pthread_detach(LEX_THREAD_MAIN);
@@ -60,9 +64,13 @@ int main(int argc, char const *argv[])
 
 void *lexan(void *args)
 { // para pasar multiples parametros a esta funciones de hilo, debe ser por estructuras!
-    struct ALPHABETIC_STRUCTURE *AS;
-    AS = (struct ALPHABETIC_STRUCTURE *)args;
-    char  MCOM[12][2]={0};
+    struct ALPHABETIC_STRUCTURE *A, *B; 
+    A = (struct ALPHABETIC_STRUCTURE *)args;
+    B = A;
+    char  MCOM[12][2]={0}; //TEMPORALMENTE, SE ELIMINARA EN PROXIMA VERSIONES
+    B = (A *)malloc(struct A);
+    FILE *archivo;
+    
 
 
     char **ALPHABET_M = (char **) malloc (6*sizeof(char *));
@@ -72,7 +80,21 @@ void *lexan(void *args)
         strcpy(*(ALPHABET_M),   "../dll/data_pr.dll"); //THIS_NRM(0);THIS_OK();THIS_NRM(1); printf(" Correcta carga del pr.\n");
         strcpy(*(ALPHABET_M+1), "../dll/data_op.dll"); //THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf(" Correcta carga del pr.\n");
         strcpy(*(ALPHABET_M+2), "../dll/data_se.dll");
+        
+    int i = 0;
+    while( i != 1){
+        archivo = fopen(*(ALPHABET_M + i), "r");
 
+        if(archivo == NULL)
+            exit(EXIT_FAILURE);
+        else {
+            while(feof(archivo)==0){
+               fgets(A->reserved_words,2,archivo);
+            }
+        }
+
+        i++;
+    }
 
         //strcpy(*(ALPHABET_M+2), "Hola mundo");
         //**(ALPHABET_M ) = "Hola mundo";
@@ -90,10 +112,10 @@ void *lexan(void *args)
 
 
        // free(ALPHABET_M); //--
-                          //---- Estas dos son para liberar la memoria de manera correcta, deberia ser luego de su procesado!
-       // ALPHABET_M = NULL;//-
-       
-    //se comento LOAD_ALPHABET porque la matriz de alfabetos se encuentra bajo pruebas.
-    //LOAD_ALPHABET(ALPHABET_M,MCOM);//pthread_exit(AS->LEX_THREAD_MAIN); //recordar trate de cerrar el hilo de ejecucion
+                            //---- Estas dos son para liberar la memoria de manera correcta, deberia ser luego de su procesado!
+       // ALPHABET_M = NULL;//--
+
+
+       //LOAD_ALPHABET(ALPHABET_M,MCOM, AS);//pthread_exit(AS->LEX_THREAD_MAIN); //recordar trate de cerrar el hilo de ejecucion
 }//fin analicis lexico
 
