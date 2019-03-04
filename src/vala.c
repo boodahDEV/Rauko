@@ -14,7 +14,6 @@
         #define THIS_NRM(a) ((a == 0)? printf("\x1B[0m ["): printf("\x1B[0m]"))
 #else
     #define sys "WIN"
-  //  #define TYPE_SYSTEM_EXEC(sys) ((sys == "WIN") ? printf("Ejecutando en sistema basado en Windows/Microsoft.\n\n\n") : printf("Ejecuntando en sistema basado en GNU/LINUX..\n\n\n"))
 #endif
 void *lexan(void *);
 
@@ -22,8 +21,8 @@ void *lexan(void *);
         {
             char reserved_words[3]; //PALABRAS RESERVADAS
             char cod_asc_words[8];  //CODIGO ASCII DE LAS PALABRAS RESERVADAS
-            struct ALPHABETIC_STRUCTURE *liga;
-        };
+            //struct ALPHABETIC_STRUCTURE *liga;
+        }AS;
 
 int main(int argc, char const *argv[])
 {
@@ -42,9 +41,9 @@ int main(int argc, char const *argv[])
     case 0:
     {
         pthread_t LEX_THREAD_MAIN; // hilo de ejecucion del analicis lexico!
-        typedef struct ALPHABETIC_STRUCTURE *nodo;
-        nodo *AS = (nodo *)malloc(sizeof(struct ALPHABETIC_STRUCTURE));
-        PID_SON = getpid(); //DEVUELVE EL ID DEL PROCESO HIJO
+        //typedef struct ALPHABETIC_STRUCTURE *AS;
+        //AS = (AS *) malloc(sizeof(struct ALPHABETIC_STRUCTURE));
+        PID_SON = getpid();
 
         pthread_create(&LEX_THREAD_MAIN, NULL, lexan, (void *)&AS);
         pthread_join(LEX_THREAD_MAIN, NULL); //ESTE PROCESOS ESPERA A QUE EL HILO CULMINE
@@ -63,12 +62,12 @@ int main(int argc, char const *argv[])
 } //end main
 
 void *lexan(void *args)
-{ // para pasar multiples parametros a esta funciones de hilo, debe ser por estructuras!
-    struct ALPHABETIC_STRUCTURE *A, *B; 
+{ 
+    struct ALPHABETIC_STRUCTURE *A; 
     A = (struct ALPHABETIC_STRUCTURE *)args;
-    B = A;
-    char  MCOM[12][2]={0}; //TEMPORALMENTE, SE ELIMINARA EN PROXIMA VERSIONES
-    B = (A *)malloc(struct A);
+    char  **MCOM = (char **)malloc(10*sizeof(char *));
+        for (int i = 0; i < 10;i++)
+            MCOM[i] = (char *)malloc(2*sizeof(char));
     FILE *archivo;
     
 
@@ -81,21 +80,26 @@ void *lexan(void *args)
         strcpy(*(ALPHABET_M+1), "../dll/data_op.dll"); //THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf(" Correcta carga del pr.\n");
         strcpy(*(ALPHABET_M+2), "../dll/data_se.dll");
         
-    int i = 0;
-    while( i != 1){
-        archivo = fopen(*(ALPHABET_M + i), "r");
+    int x = 0;
+    while( x != 1){
+        archivo = fopen(*(ALPHABET_M + x), "r");
 
-        if(archivo == NULL)
+        if(archivo == NULL){
+            THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf(" Archivo '%s' en conflicto.\n",*(ALPHABET_M  + x));
             exit(EXIT_FAILURE);
-        else {
-            while(feof(archivo)==0){
-               fgets(A->reserved_words,2,archivo);
+        } else {
+            for(int j = 0; j < 10 ; j++){
+               //fgets(*(MCOM + i),2,archivo);
+                fscanf(archivo, "%[^\n]" ,*(MCOM + x));
+                THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s\n",*(MCOM + x));
             }
+                //THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s\n",*(MCOM + 1));
+
         }
-
-        i++;
+        
+        x++;
     }
-
+        fclose(archivo);
         //strcpy(*(ALPHABET_M+2), "Hola mundo");
         //**(ALPHABET_M ) = "Hola mundo";
         //printf("Contenido de la matriz dinamica: %s\n",*(ALPHABET_M));
