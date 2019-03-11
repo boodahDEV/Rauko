@@ -65,17 +65,13 @@ void *lexan(void *args)
 { 
     struct ALPHABETIC_STRUCTURE *A; 
     A = (struct ALPHABETIC_STRUCTURE *)args;
+    FILE *archivo;
     char  **MCOM = (char **)malloc(10*sizeof(char *));
         for (int i = 0; i < 10;i++)
             MCOM[i] = (char *)malloc(2*sizeof(char));
-    FILE *archivo;
-    
-
-
     char **ALPHABET_M = (char **) malloc (6*sizeof(char *));
         for(int i = 0; i < 6; i++)
             ALPHABET_M[i]=(char *) malloc ( 20 *sizeof(char));
-            //strcpy(ALPHABET_M[1], "mundo");
         strcpy(*(ALPHABET_M),   "../dll/data_pr.dll"); //THIS_NRM(0);THIS_OK();THIS_NRM(1); printf(" Correcta carga del pr.\n");
         strcpy(*(ALPHABET_M+1), "../dll/data_op.dll"); //THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf(" Correcta carga del pr.\n");
         strcpy(*(ALPHABET_M+2), "../dll/data_se.dll");
@@ -88,11 +84,17 @@ void *lexan(void *args)
             THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf(" Archivo '%s' en conflicto.\n",*(ALPHABET_M  + x));
             exit(EXIT_FAILURE);
         } else {
+            char temp[1];
             for(int j = 0; j < 10 ; j++){
                //fgets(*(MCOM + i),2,archivo);
-                fscanf(archivo, "%[^\n]" ,*(MCOM + x));
-                THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s\n",*(MCOM + x));
-            }
+                //fscanf(archivo, "%[^\n]" ,*(MCOM + x));
+                temp[x] = fgetc(archivo);
+                if(temp[x] != EOF){
+                    strcpy(*(MCOM+x),temp);
+                    THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s\n",*(MCOM + x));
+                }//fin del if
+
+            }//fin del for
                 //THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s\n",*(MCOM + 1));
 
         }
@@ -100,6 +102,7 @@ void *lexan(void *args)
         x++;
     }
         fclose(archivo);
+        free(ALPHABET_M);ALPHABET_M = NULL; //libero la memoria utilizada para esta matriz
         //strcpy(*(ALPHABET_M+2), "Hola mundo");
         //**(ALPHABET_M ) = "Hola mundo";
         //printf("Contenido de la matriz dinamica: %s\n",*(ALPHABET_M));
