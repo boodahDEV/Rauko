@@ -66,41 +66,55 @@ void *lexan(void *args)
     struct ALPHABETIC_STRUCTURE *A; 
     A = (struct ALPHABETIC_STRUCTURE *)args;
     FILE *archivo;
+
     char  **MCOM = (char **)malloc(10*sizeof(char *));
         for (int i = 0; i < 10;i++)
             MCOM[i] = (char *)malloc(2*sizeof(char));
     char **ALPHABET_M = (char **) malloc (6*sizeof(char *));
         for(int i = 0; i < 6; i++)
             ALPHABET_M[i]=(char *) malloc ( 20 *sizeof(char));
+
+        /*--CARGA DE LOS ALFABETOS--*/
         strcpy(*(ALPHABET_M),   "../dll/data_pr.dll"); //THIS_NRM(0);THIS_OK();THIS_NRM(1); printf(" Correcta carga del pr.\n");
         strcpy(*(ALPHABET_M+1), "../dll/data_op.dll"); //THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf(" Correcta carga del pr.\n");
         strcpy(*(ALPHABET_M+2), "../dll/data_se.dll");
-        
-    int x = 0;
-    while( x != 1){
-        archivo = fopen(*(ALPHABET_M + x), "r");
+        /*--CARGA DE LOS ALFABETOS--*/
+
+    int x = 0; //CONTADOR POR ARCHIVO
+    while( x != 1){ // EL 1 INDICA LA CANTIDAD DE ARCHIVOS A LEER
+        archivo = fopen(*(ALPHABET_M + x), "r"); 
 
         if(archivo == NULL){
             THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf(" Archivo '%s' en conflicto.\n",*(ALPHABET_M  + x));
             exit(EXIT_FAILURE);
         } else {
-            char temp[1];
-            for(int j = 0; j < 10 ; j++){
+            char temp[2], temp_f1[2], *devf; int j = 0;
+            /*  for(int j = 0; j < 2 && !feof(archivo); j++){
                //fgets(*(MCOM + i),2,archivo);
-                //fscanf(archivo, "%[^\n]" ,*(MCOM + x));
-                temp[x] = fgetc(archivo);
-                if(temp[x] != EOF){
-                    strcpy(*(MCOM+x),temp);
+                fscanf(archivo, "%[^\n]" ,temp_f1);
+                //temp_f1[1] = fgetc(archivo);
+
+                   // strncat(temp,temp_f1,3);
+                    strcpy(*(MCOM+x),temp_f1);
                     THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s\n",*(MCOM + x));
-                }//fin del if
+                    strcpy(temp_f1, "");
 
-            }//fin del for
+            }//fin del for 
+            */
                 //THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s\n",*(MCOM + 1));
-
+            do{
+                devf = fgets(temp_f1,5,archivo);
+                    strcpy(*(MCOM+j),temp_f1); printf("%s\n",temp_f1);
+                THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s, j=[%d]\n",*(MCOM + j),j);
+                    j++;
+             }while (devf!=NULL && j<2);
         }
-        
+                   
+                    //THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %c\n",MCOM[0][1]);
+                    //THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %c\n",MCOM[1][0]);
+                    //THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %c\n",MCOM[1][1]);
         x++;
-    }
+    }//fin del whihle encargado de tomar cada archivo
         fclose(archivo);
         free(ALPHABET_M);ALPHABET_M = NULL; //libero la memoria utilizada para esta matriz
         //strcpy(*(ALPHABET_M+2), "Hola mundo");
