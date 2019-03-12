@@ -1,54 +1,46 @@
 // AQUI SE CONSTRUIRA LA LIBRERIA DEL SISTEMA LEXICO EN EL CUAL SUS FUNCIONES HARAN LAS BUSQUEDA Y CLASIFICACION POR TOKEN.
-void LOAD_ALPHABET(char ** , char[][2]);
+#define MAX_COLUM 2
+#define THIS_OK() (printf("\x1B[32m O K "))
+#define THIS_ERROR() (printf("\x1B[31mERROR"))
+#define THIS_NRM(a) ((a == 0)? printf("\x1B[0m ["): printf("\x1B[0m] "))
 
-void LOAD_ALPHABET(char ** ALPHABET_M, char MCOM[][2])
+
+char ** LOAD_ALPHABET(char *[MAX_COLUM]);
+
+char ** LOAD_ALPHABET(char *MCOM[MAX_COLUM])
 {
-    // FILE *archivo;
-    // char *url;
-    // int i = 0;
-    // while( i != 1){
-    //     archivo = fopen(*(ALPHABET_M + i), "r");
+    FILE *archivo;
 
-    //     if(archivo == NULL){
-    //         exit(EXIT_FAILURE);
-    //     }
-    //     else {
-    //         while(!feof(archivo)){
-    //             AS->reserved_words = "hol";
-    //             printf("%s\n",AS->reserved_words);
-    //         }
-    //     }
+     char **ALPHABET_M = (char **) malloc (6*sizeof(char *));
+        for(int i = 0; i < 6; i++)
+            ALPHABET_M[i]=(char *) malloc ( 20 *sizeof(char));
 
-    //     i++;
-    // }
-    // archivo = fopen(url, "r");
-    // char Arr_Com[35]; // TEMPORAL
-    // int res_pal = 0;  // resto de la palabra reservada
-    // int cant_pal = 0; // cantidad de palabras reservadas
+        /*--CARGA DE LOS ALFABETOS--*/
+        strcpy(*(ALPHABET_M),   "../dll/data_pr.dll"); //THIS_NRM(0);THIS_OK();THIS_NRM(1); printf(" Correcta carga del pr.\n");
+        strcpy(*(ALPHABET_M+1), "../dll/data_op.dll"); //THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf(" Correcta carga del pr.\n");
+        strcpy(*(ALPHABET_M+2), "../dll/data_se.dll");
+        /*--CARGA DE LOS ALFABETOS--*/
 
-    // if (archivo == NULL)
-    // {
-    //     printf("\nError en la carga de los recursos del alfabeto.\n");
-    //     exit(EXIT_FAILURE);
-    // }
-    // else
-    // {
-    //     for (int i = 0; i < 26; i++)
-    //     {
-    //         fscanf(archivo, "%c", &Arr_Com[i]); //De alguna manera esto en el futuro debe ser directo a la matriz
-    //         if (Arr_Com[i] != '\n' && Arr_Com[i])
-    //         {
-    //             MCOM[cant_pal][res_pal] = Arr_Com[i];
-    //             res_pal++;
-    //         }
-    //         else
-    //         {
-    //             MCOM[cant_pal][res_pal] = '\0';
-    //             res_pal = 0;
-    //             cant_pal++;
-    //         }
-    //         //Carga todas las palabras reseradas en el arreglo
-    //     } //END FOR
-    // }
-    // fclose(archivo);
+    int k=0; char temp[10];
+    int x = 0; //CONTADOR POR ARCHIVO
+    while( x != 3){ // EL 1 INDICA LA CANTIDAD DE ARCHIVOS A LEER
+        archivo = fopen(*(ALPHABET_M + x), "r"); 
+        if(archivo == NULL){
+            THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf("Archivo '%s' en conflicto.\n",*(ALPHABET_M  + x));
+            exit(EXIT_FAILURE);
+        } else {
+            while (!feof(archivo)){
+                fscanf(archivo, "%s" ,temp);
+                //printf("*[%s]*\n",temp);
+                strcpy(*(MCOM+k),temp);
+                k++;
+            }//fin while que manipula los alfabetos
+        } //end else
+        x++;
+    }//fin del whihle encargado de tomar cada archivo
+     THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Loading Alphabets: %d \n",k);
+
+        fclose(archivo);
+        free(ALPHABET_M);ALPHABET_M = NULL; //libero la memoria utilizada para esta matriz
+    return MCOM;
 } //---=== END BUSCA ===---
