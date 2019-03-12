@@ -11,7 +11,7 @@
     #define sys "UNIX"
         #define THIS_OK() (printf("\x1B[32m O K "))
         #define THIS_ERROR() (printf("\x1B[31mERROR"))
-        #define THIS_NRM(a) ((a == 0)? printf("\x1B[0m ["): printf("\x1B[0m]"))
+        #define THIS_NRM(a) ((a == 0)? printf("\x1B[0m ["): printf("\x1B[0m] "))
 #else
     #define sys "WIN"
 #endif
@@ -68,7 +68,7 @@ void *lexan(void *args)
     FILE *archivo;
 
     char  **MCOM = (char **)malloc(10*sizeof(char *));
-        for (int i = 0; i < 10;i++)
+        for (int i = 0; i < 11;i++)
             MCOM[i] = (char *)malloc(2*sizeof(char));
     char **ALPHABET_M = (char **) malloc (6*sizeof(char *));
         for(int i = 0; i < 6; i++)
@@ -80,62 +80,35 @@ void *lexan(void *args)
         strcpy(*(ALPHABET_M+2), "../dll/data_se.dll");
         /*--CARGA DE LOS ALFABETOS--*/
 
+    int k=0; char temp[10];
     int x = 0; //CONTADOR POR ARCHIVO
-    while( x != 1){ // EL 1 INDICA LA CANTIDAD DE ARCHIVOS A LEER
+    while( x != 3){ // EL 1 INDICA LA CANTIDAD DE ARCHIVOS A LEER
         archivo = fopen(*(ALPHABET_M + x), "r"); 
-
         if(archivo == NULL){
-            THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf(" Archivo '%s' en conflicto.\n",*(ALPHABET_M  + x));
+            THIS_NRM(0);THIS_ERROR();THIS_NRM(1); printf("Archivo '%s' en conflicto.\n",*(ALPHABET_M  + x));
             exit(EXIT_FAILURE);
         } else {
-            char temp[2], temp_f1[2], *devf; int j = 0;
-            /*  for(int j = 0; j < 2 && !feof(archivo); j++){
-               //fgets(*(MCOM + i),2,archivo);
-                fscanf(archivo, "%[^\n]" ,temp_f1);
-                //temp_f1[1] = fgetc(archivo);
-
-                   // strncat(temp,temp_f1,3);
-                    strcpy(*(MCOM+x),temp_f1);
-                    THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s\n",*(MCOM + x));
-                    strcpy(temp_f1, "");
-
-            }//fin del for 
-            */
-                //THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s\n",*(MCOM + 1));
-            do{
-                devf = fgets(temp_f1,5,archivo);
-                    strcpy(*(MCOM+j),temp_f1); printf("%s\n",temp_f1);
-                THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %s, j=[%d]\n",*(MCOM + j),j);
-                    j++;
-             }while (devf!=NULL && j<2);
-        }
-                   
-                    //THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %c\n",MCOM[0][1]);
-                    //THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %c\n",MCOM[1][0]);
-                    //THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: %c\n",MCOM[1][1]);
+            while (feof(archivo) == 0){
+                fscanf(archivo, "%s" ,temp);
+                printf("*[%s]*\n",temp);
+                strcpy(*(MCOM+k),temp);
+                k++;
+            }//fin while que manipula los alfabetos
+        THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Recerved Word: [%d]\n",k);
+        } //end else
         x++;
     }//fin del whihle encargado de tomar cada archivo
-        fclose(archivo);
-        free(ALPHABET_M);ALPHABET_M = NULL; //libero la memoria utilizada para esta matriz
-        //strcpy(*(ALPHABET_M+2), "Hola mundo");
-        //**(ALPHABET_M ) = "Hola mundo";
-        //printf("Contenido de la matriz dinamica: %s\n",*(ALPHABET_M));
-      /*for(int i = 0; i < 6; i++)
+        for (int i = 0; i < 10; i++)
         {
-            for(int j = 0; j < 20; j++)
+            for (int j = 0; j < 2; j++)
             {
-
-              if(ALPHABET_M[i][j]!='\0'){
-                printf("%c [ %d ][ %d ][ %p ]\n",ALPHABET_M[i][j],i,j,(ALPHABET_M[i]+j));}
+                printf("Matriz[%d][%d] = %c\n",i,j,MCOM[i][j]);
             }
             printf("\n\n");
-        }*/
+        }
 
-
-       // free(ALPHABET_M); //--
-                            //---- Estas dos son para liberar la memoria de manera correcta, deberia ser luego de su procesado!
-       // ALPHABET_M = NULL;//--
-
+        fclose(archivo);
+        free(ALPHABET_M);ALPHABET_M = NULL; //libero la memoria utilizada para esta matriz
 
        //LOAD_ALPHABET(ALPHABET_M,MCOM, AS);//pthread_exit(AS->LEX_THREAD_MAIN); //recordar trate de cerrar el hilo de ejecucion
 }//fin analicis lexico
