@@ -78,4 +78,3 @@ void *lexan(void *args) // lexan V1.0
     THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Successfully\n");
 
 }//fin analicis lexico
-

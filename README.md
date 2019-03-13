@@ -23,12 +23,10 @@ Un ejemplo para mostrar una salida correcta es
 ### Contribuyendo
 Las solicitudes de extracción son bienvenidas. Para cambios importantes, primero abra un problema para discutir qué le gustaría cambiar.
 
-Por favor, asegúrese de actualizar las pruebas según corresponda.
 
 ## Licencia
 [Apache 2.0](https://choosealicense.com/licenses/apache-2.0/)
 
-
-
-###### PROYECTO AUN EN PAÑALES.
-
+ 
+### PROYECTO AUN EN PAÑALES.
+  * Version estable [Rauko V0.0.90](https://github.com/boodahDEV/Rauko/archive/v0.0.90.zip) ( Esta version es muy basica pero funciona )
