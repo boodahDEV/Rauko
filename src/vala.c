@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <signal.h>
 #include "include/lexan.h"
 #include <pthread.h>
@@ -8,60 +9,72 @@
     #include <unistd.h>
     #include <sys/wait.h>
     #define sys "UNIX"
-    #define TYPE_SYSTEM_EXEC(sys) ((sys == "UNIX") ? printf("Ejecutando en sistema basado en GNU/LINUX.\n\n\n") : printf("Ejecuntando en sistema basado en Windows/Microsoft.\n\n\n"))
+        #define THIS_OK() (printf("\x1B[32m O K "))
+        #define THIS_ERROR() (printf("\x1B[31mERROR"))
+        #define THIS_NRM(a) ((a == 0)? printf("\x1B[0m ["): printf("\x1B[0m] "))
 #else
     #define sys "WIN"
-    #define TYPE_SYSTEM_EXEC(sys) ((sys == "WIN") ? printf("Ejecutando en sistema basado en Windows/Microsoft.\n\n\n") : printf("Ejecuntando en sistema basado en GNU/LINUX..\n\n\n"))
 #endif
 void *lexan(void *);
 
+        struct TOKEN_LEX
+        {
+            char comp_lex[2]; //PALABRAS RESERVADAS
+            char cod_asc_words[8];  //CODIGO ASCII DE LAS PALABRAS RESERVADAS
+        }TOK;
 
-
+        /*MATRIZ DE COMANDOS O ALFABETOS GLOBAL*/
+        char  **MCOM;
+        /*MATRIZ DE COMANDOS O ALFABETOS GLOBAL*/
 int main(int argc, char const *argv[])
 {
-    char texto_entrada[50];
     int STATUS;
     static pid_t RESULT_FORK, PID_SON, PID_DAD;
-    TYPE_SYSTEM_EXEC(sys);     // tipo de sistema en ejecucion.
     PID_DAD = getpid();
+
+
     //======= TODO APARTIR DE AQUI SE DUPLICARA EN EL PROCESO HIJO, TOMAR EN CUENTA AL TRATAR DE MAXIMIZAR EL CODIGO =======//
     switch (RESULT_FORK = fork())
     {
-    case -1:
+    case -1: /*PREMATURO*/
     {
         exit(EXIT_FAILURE);
     }
-    case 0:
+    case 0: /*HIJO*/
     {
-        pthread_t LEX_THREAD_MAIN; // hilo de ejecucion del analicis lexico!
-        struct ALPHABETIC_STRUCTURE
-        {
-            char reserved_words[3];
-            char cod_asc_words[8];
-            struct ALPHABETIC_STRUCTURE *liga;
-        }AS;
+       // pthread_t LEX_THREAD_LOAD; // HILO QUE EJECUTA LA CARGA DE LOS ALFABETOS!.
+        pthread_t LEX_THREAD_ANALICE; // HILO QUE EJECUTA EL ANALICIS LEXICO.
         PID_SON = getpid();
-        pthread_create(&AS.LEX_THREAD_MAIN, NULL, lexan, (void *)&AS);
-        pthread_join(AS.LEX_THREAD_MAIN, NULL); //ESTE PROCESOS ESPERA A QUE EL HILO CULMINE
+
+        pthread_create(&LEX_THREAD_ANALICE, NULL, lexan, (void *)&TOK);
+        pthread_join(LEX_THREAD_ANALICE, NULL); //ESTE PROCESOS ESPERA A QUE EL HILO CULMINE
         //pthread_detach(LEX_THREAD_MAIN);
         exit(getpid() > PID_DAD);
     }
-    default:
+    default: /*PADRE*/
     {
+        /* more code here for process father */
+
+
         waitpid (PID_SON, &STATUS, 0); //ESPERA A LA FINALIZACION DEL PROCESO HIJO!
         exit(EXIT_SUCCESS);
     }
     } //end switch
     //======= NO COLOCAR NADA DESPUES DE AQUI, SI CONSIDERAS QUE EL PROCESO PADRE EJECUTE ALGO INDEPENDIENTE, DEBE SER DENTRO DEL IF, Y LO MISMO EN EL HIJO. ======/
-
 } //end main
 
-void *lexan(void *args)
-{ // para pasar multiples parametros a esta funciones de hilo, debe ser por estructuras!
-    struct ALPHABETIC_STRUCTURE *AS;
-    AS = (struct ALPHABETIC_STRUCTURE *)args; 
-    char  m_comando[12][2]={0};
-    char ALPHABET_1[]= "../dll/data_1.dll";
-    int i = 0;
-    LOAD_ALPHABET(ALPHABET_1,m_comando);//pthread_exit(AS->LEX_THREAD_MAIN); //recordar trate de cerrar el hilo de ejecucion
+void *lexan(void *args) // lexan V1.0 
+{ 
+    struct TOKEN_LEX *TOK; 
+    TOK = (struct TOKEN_LEX *)args;
+
+    /*DEFINO A MCOM */
+    MCOM = (char **)malloc(10*sizeof(char *));
+        for (int i = 0; i < 11;i++)
+            MCOM[i] = (char *)malloc(2*sizeof(char));
+    /*DEFINO A MCOM */  
+    
+    /*#*/MCOM = LOAD_ALPHABET(MCOM); // HACE LA CARGA DE LOS ALFABETOS.
+    THIS_NRM(0);THIS_OK();THIS_NRM(1);printf("Successfully\n");
+
 }//fin analicis lexico
